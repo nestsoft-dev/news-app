@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newapp/screens/homepage.dart';
 import 'package:newapp/screens/onboarding/onboardingpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typewritertext/typewritertext.dart';
 
 class Splashscreen extends StatelessWidget {
@@ -8,12 +10,27 @@ class Splashscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // // nav
+    Future.delayed(const Duration(seconds: 3), () async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // nav
-    Future.delayed(const Duration(seconds: 3), () {
-      
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const OnboardingScreen())); 
+      final bool completeOnboarding = prefs.getBool('completeOnboarding')??false;
+
+      print('Complete Onboarding: $completeOnboarding');
+
+    if (completeOnboarding == true) {
+       Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Homepage()),
+      );
+      }else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        );
+      }
     });
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -29,7 +46,7 @@ class Splashscreen extends StatelessWidget {
         ),
         child: Center(
           child: TypeWriter.text(
-            'Welcome to Newapp\n\nBy Shabaal',
+            'Welcome to Newsapp\n\nBy Shabaal',
             textAlign: TextAlign.center,
             duration: const Duration(milliseconds: 50),
             style: GoogleFonts.poppins(

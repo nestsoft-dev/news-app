@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newapp/screens/onboarding/onboardingpage.dart';
 import 'package:newapp/screens/splashScreen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
@@ -17,11 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Newapp',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: const Splashscreen(),
-  
     );
   }
 }
-
 
 /*
 

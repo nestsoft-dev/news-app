@@ -37,6 +37,9 @@ dependencies:
   google_fonts: ^9.0.0
   typewritertext: ^3.0.9
   smooth_page_indicator: ^3.0.0
+  shared_preferences: ^2.5.6
+  carousel_slider: ^5.1.2
+  google_mobile_ads: ^9.1.0
 
 dev_dependencies:
   flutter_test:

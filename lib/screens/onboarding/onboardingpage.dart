@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/constants/appConstantFile.dart';
 import 'package:newapp/models/onboardingModel.dart';
+import 'package:newapp/screens/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -22,6 +24,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _currentPage = _pageController.page!.round();
       });
     });
+
+    print('Current Page: $_currentPage');
   }
 
   @override
@@ -50,6 +54,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 width: size.width * .9,
 
                 child: PageView.builder(
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                    print('Current Page: $_currentPage');
+                  },
                   controller: _pageController,
                   itemCount: onboardingData['onboarding']!.length,
                   itemBuilder: (_, index) {
@@ -81,9 +91,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               SizedBox(height: size.height * .02),
               GestureDetector(
-                onTap: () {
-                  if (_currentPage == onboardingData['onboarding']!.length - 1) {
+                onTap: () async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                  if (_currentPage ==
+                      onboardingData['onboarding']!.length - 1) {
+                   
+
+                    await prefs.setBool('completeOnboarding', true);
+
                     // Navigate to the next screen
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Homepage()),
+                    );
                   } else {
                     _pageController.nextPage(
                       duration: Duration(milliseconds: 300),
